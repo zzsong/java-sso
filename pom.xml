@@ -14,4 +14,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <modules>
+        <module>sso-server</module>
+        <module>tb-client</module>
+        <module>tm-client</module>
+    </modules>
+
 </project>
