@@ -1,17 +1,17 @@
 package com.sso.server.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-@RestController
+@Controller
 public class IndexController {
 
     private Map<String, String> loginCacheMap = new ConcurrentHashMap<>();
@@ -22,28 +22,24 @@ public class IndexController {
     }
 
     @RequestMapping("toLogin")
-    public ModelAndView toLogin(String redirectUrl){
-        ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("redirectUrl",redirectUrl);
-        return modelAndView;
+    public String toLogin(String redirectUrl, Model model){
+        model.addAttribute("redirectUrl",redirectUrl);
+        return "login";
     }
 
     @RequestMapping("login")
-    public ModelAndView login(String account, String password, String redirectUrl, HttpSession session){
-        ModelAndView modelAndView = new ModelAndView("");
+    public String login(String account, String password, String redirectUrl, HttpSession session, Model model){
+//        RedirectView redirectView = new RedirectView("");
         System.out.println(account+"====>"+password+"--->"+redirectUrl);
         if ("admin".equals(account) && "123456".equals(password)){
             String token = UUID.randomUUID().toString();
+            System.out.println("login success, token=>"+token);
             loginCacheMap.put(token,account);
-            modelAndView.setViewName("forward:"+redirectUrl);
-            modelAndView.addObject("token",token);
-            RedirectView redirectView = new RedirectView();
-//            redirectView.
-            return modelAndView;
+            model.addAttribute("token",token);
+            return "redirect:"+redirectUrl;
         }
-        modelAndView.setViewName("login");
-        modelAndView.addObject("redirectUrl",redirectUrl);
-        return modelAndView;
+        model.addAttribute("redirectUrl",redirectUrl);
+        return "login";
     }
 
     /**
@@ -53,22 +49,23 @@ public class IndexController {
      * @return
      */
     @RequestMapping("checkLogin")
-    public ModelAndView checkLogin(String redirectUrl, HttpSession session){
-        ModelAndView modelAndView = new ModelAndView();
-
+    public String checkLogin(String redirectUrl, HttpSession session, Model model){
         String token = (String) session.getAttribute("token");
-
+        System.out.println("checkLogin==>"+redirectUrl+" \t token=>"+token);
         if (StringUtils.isEmpty(token)){
-            modelAndView.addObject("redirectUrl",redirectUrl);
-            modelAndView.setViewName("login");
-        } else {
-            modelAndView.setViewName("redirect:"+redirectUrl);
-            modelAndView.addObject("token",token);
+            //无会话，跳转到登录页面
+//            modelAndView.addObject("redirectUrl",redirectUrl);
+            model.addAttribute("redirectUrl",redirectUrl);
+            return "login";
         }
-        return modelAndView;
+
+        //登录成功，返回请求Url 并带上token
+        model.addAttribute("token",token);
+        return "redirect:"+redirectUrl;
     }
 
     @RequestMapping("verify")
+    @ResponseBody
     public String verify(String token){
         return loginCacheMap.get(token);
     }

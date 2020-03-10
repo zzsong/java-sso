@@ -29,10 +29,13 @@ public class SsoClientInterceptor implements HandlerInterceptor {
         // 验证token登录过
         String token = (String) session.getAttribute("token");
         if (StringUtils.isEmpty(token)){
-            ssoClientManager.sendSsoLogin(request, response);
+            //没有会话，跳转到认证中心。检测是否登录
+            ssoClientManager.sendSsoCheck(request, response);
         } else {
+            //有会话，登录到认证服务中心进行验证
             String account = ssoClientManager.sendSsoVerify(token);
             if (StringUtils.isEmpty(account)){
+                //验证失败，重新跳转到登录页面
                 ssoClientManager.sendSsoLogin(request, response);
             } else {
                 session.setAttribute("isLogin",true);

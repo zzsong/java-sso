@@ -18,13 +18,13 @@ public class SsoClientManager {
     private SsoProperties ssoProperties;
 
     public void sendSsoLogin(HttpServletRequest request,  HttpServletResponse response) throws IOException {
-        String redirect = ssoProperties.getServerUrl()+"/toLogin?redirectUrl="+ssoProperties.getClientUrl()+"/"+request.getServletPath();
+        String redirect = ssoProperties.getServerUrl()+"/toLogin?redirectUrl="+ssoProperties.getClientUrl()+request.getServletPath();
         System.out.println(redirect);
         response.sendRedirect(redirect);
     }
 
-    public void sendSsoCheck(String token, HttpServletRequest request,  HttpServletResponse response) throws IOException {
-        String redirect = ssoProperties.getServerUrl()+"/checkLogin?redirectUrl="+ssoProperties.getClientUrl()+"/"+request.getServletPath();
+    public void sendSsoCheck(HttpServletRequest request,  HttpServletResponse response) throws IOException {
+        String redirect = ssoProperties.getServerUrl()+"/checkLogin?redirectUrl="+ssoProperties.getClientUrl()+request.getServletPath();
         System.out.println(redirect);
         response.sendRedirect(redirect);
     }

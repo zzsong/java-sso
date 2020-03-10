@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.inject.Inject;
@@ -22,9 +23,10 @@ public class TbClientWebConfig implements WebMvcConfigurer {
     @Inject
     private SsoClientInterceptor ssoClientInterceptor;
 
-//    @Override
-//    public  void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(ssoClientInterceptor).addPathPatterns("/**").excludePathPatterns("/");
-//    }
+    @Override
+    public  void addInterceptors(InterceptorRegistry registry) {
+        //过滤首页/,  拦截所有其它请求
+        registry.addInterceptor(ssoClientInterceptor).addPathPatterns("/**").excludePathPatterns("/");
+    }
 
 }
