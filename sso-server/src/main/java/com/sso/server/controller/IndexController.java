@@ -1,13 +1,20 @@
 package com.sso.server.controller;
 
-import com.sso.server.domain.UserInfo;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpSession;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 public class IndexController {
+
+    private Map<String, String> loginCacheMap = new ConcurrentHashMap<>();
 
     @RequestMapping(value = {"/","index"})
     public String index(String appId){
@@ -22,12 +29,47 @@ public class IndexController {
     }
 
     @RequestMapping("login")
-    public String login(@ModelAttribute("user") UserInfo user){
-
-        System.out.println(user.getAccount()+"====>"+user.getPassword()+"--->"+user.getRedirectUrl());
-        if ("admin".equals(user.getAccount()) && "123456".equals(user.getPassword())){
-            return "login success";
+    public ModelAndView login(String account, String password, String redirectUrl, HttpSession session){
+        ModelAndView modelAndView = new ModelAndView("");
+        System.out.println(account+"====>"+password+"--->"+redirectUrl);
+        if ("admin".equals(account) && "123456".equals(password)){
+            String token = UUID.randomUUID().toString();
+            loginCacheMap.put(token,account);
+            modelAndView.setViewName("forward:"+redirectUrl);
+            modelAndView.addObject("token",token);
+            RedirectView redirectView = new RedirectView();
+//            redirectView.
+            return modelAndView;
         }
-        return "login fail";
+        modelAndView.setViewName("login");
+        modelAndView.addObject("redirectUrl",redirectUrl);
+        return modelAndView;
+    }
+
+    /**
+     * 检查登录
+     * @param redirectUrl
+     * @param session
+     * @return
+     */
+    @RequestMapping("checkLogin")
+    public ModelAndView checkLogin(String redirectUrl, HttpSession session){
+        ModelAndView modelAndView = new ModelAndView();
+
+        String token = (String) session.getAttribute("token");
+
+        if (StringUtils.isEmpty(token)){
+            modelAndView.addObject("redirectUrl",redirectUrl);
+            modelAndView.setViewName("login");
+        } else {
+            modelAndView.setViewName("redirect:"+redirectUrl);
+            modelAndView.addObject("token",token);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping("verify")
+    public String verify(String token){
+        return loginCacheMap.get(token);
     }
 }

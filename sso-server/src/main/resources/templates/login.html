@@ -69,13 +69,13 @@
 <body>
 
 <div class="container">
-    <form class="form-signin" action="#" th:action="@{/login}" th:method="post" >
+    <form class="form-signin" action="/login" method="post" >
         <h2 class="form-signin-heading">登录</h2>
-        <input type="hidden" id="redirectUrl" th:value="${redirectUrl}" >
+        <input type="hidden" id="redirectUrl" name="redirectUrl" value="${redirectUrl}" >
         <label for="inputAccount" class="sr-only">账号</label>
-        <input type="text" id="inputAccount" th:value="${account}" class="form-control" placeholder="account" required autofocus>
+        <input type="text" id="inputAccount" name="account" class="form-control" placeholder="account" required autofocus>
         <label for="inputPassword" class="sr-only">密码</label>
-        <input type="password" id="inputPassword" th:value="${password}" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
         <div class="checkbox">
             <label>
                 <input type="checkbox" value="remember-me"> Remember me

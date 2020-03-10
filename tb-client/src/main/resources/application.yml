@@ -1,6 +1,8 @@
 server:
   port: 9000
-
+sso:
+  serverUrl: http://www.sso.com:8001
+  clientUrl: http//www.a.com:9000
 spring:
   thymeleaf:
     #模板的模式，支持 HTML, XML TEXT JAVASCRIPT
