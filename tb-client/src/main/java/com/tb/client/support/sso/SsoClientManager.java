@@ -19,13 +19,11 @@ public class SsoClientManager {
 
     public void sendSsoLogin(HttpServletRequest request,  HttpServletResponse response) throws IOException {
         String redirect = ssoProperties.getServerUrl()+"/toLogin?redirectUrl="+ssoProperties.getClientUrl()+request.getServletPath();
-        System.out.println(redirect);
         response.sendRedirect(redirect);
     }
 
     public void sendSsoCheck(HttpServletRequest request,  HttpServletResponse response) throws IOException {
         String redirect = ssoProperties.getServerUrl()+"/checkLogin?redirectUrl="+ssoProperties.getClientUrl()+request.getServletPath();
-        System.out.println(redirect);
         response.sendRedirect(redirect);
     }
 

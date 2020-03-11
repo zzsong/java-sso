@@ -1,6 +1,6 @@
-package com.tb.client.interceptor;
+package com.tm.client.interceptor;
 
-import com.tb.client.support.sso.SsoClientManager;
+import com.tm.client.sso.SsoClientManager;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

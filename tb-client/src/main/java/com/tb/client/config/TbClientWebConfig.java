@@ -25,7 +25,7 @@ public class TbClientWebConfig implements WebMvcConfigurer {
 
     @Override
     public  void addInterceptors(InterceptorRegistry registry) {
-        //过滤首页/,  拦截所有其它请求
+        //不拦截首页/,  拦截所有其它请求
         registry.addInterceptor(ssoClientInterceptor).addPathPatterns("/**").excludePathPatterns("/");
     }
 

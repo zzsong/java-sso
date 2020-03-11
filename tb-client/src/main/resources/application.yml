@@ -1,22 +1,5 @@
 server:
   port: 9000
 sso:
-  serverUrl: www.sso.com:8001
-  clientUrl: www.tb.com:9000
-spring:
-  thymeleaf:
-    #模板的模式，支持 HTML, XML TEXT JAVASCRIPT
-    mode: HTML5
-    #编码 可不用配置
-    encoding: UTF-8
-    #内容类别,可不用配置
-    content-type: text/html
-    #开发配置为false,避免修改模板还要重启服务器
-    cache: false
-    #配置模板路径，默认是templates，可以不用配置
-    prefix: classpath:/templates/
-    suffix: .html
-  devtools:
-    restart:
-      enabled: true  #设置开启热部署
-      additional-paths: src/main/java #重启目录
+  serverUrl: http://www.sso.com:8001
+  clientUrl: http://www.tb.com:9000

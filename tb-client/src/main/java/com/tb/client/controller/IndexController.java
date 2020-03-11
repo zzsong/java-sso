@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class IndexController {
@@ -20,9 +21,9 @@ public class IndexController {
     }
 
     @RequestMapping("member")
-    public ModelAndView member(String account){
+    public ModelAndView member(HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView("member");
-        modelAndView.addObject("account","admin.....");
+        modelAndView.addObject("account",request.getAttribute("account"));
         return modelAndView;
     }
 }

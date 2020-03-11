@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>tb 用户页面</title>
 </head>
 <body>
 tb 用户页面  <br/>
-账号：${account},#{account}  <a href="#">注销</a>
+账号：<span th:text="${account}"></span>
 </body>
 </html>
